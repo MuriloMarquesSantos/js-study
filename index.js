@@ -23,17 +23,32 @@ function obterTelefone(idUsuario) {
     })
 }
 
-
-const usuarioPromise = obterUsuario();
-
-usuarioPromise
-    .then((resultado) => {
-        return obterTelefone(resultado.id);
+function obterEndereco(idUsuario) {
+    return new Promise(function resolverPromise(resolve, reject){
+        setTimeout(() => {
+            return resolve({
+                rua: 'dos bobos',
+                numero: 0
+            })
+        }, 2000);
     })
-    .then(function(resultado) {
-        console.log('resultado', resultado);
-    })
-    .catch(function (error){
+}
+main();
+async function main() {
+    try {
+        const usuario = await obterUsuario();
+        const telefone = await obterTelefone(usuario.id);
+        const endereco = await obterEndereco(usuario.id);
+
+        console.log(`
+            Nome: ${usuario.nome}
+            Telefone: ${telefone.ddd} ${telefone.telefone}
+            Endereço: ${endereco.rua}, ${endereco.numero}
+        `)
+
+    }
+    catch(error) {
         console.log('DEU RUIM', error);
-    });
+    }
 
+}
